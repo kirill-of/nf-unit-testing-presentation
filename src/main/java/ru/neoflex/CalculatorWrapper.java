@@ -32,5 +32,11 @@ public class CalculatorWrapper {
         return iCalculator.division(x, y);
     }
 
+    public String addPrefix(String str) {
+        //additional functionality
+
+        return StaticService.staticMethod() + str;
+    }
+
 
 }
