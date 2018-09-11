@@ -1,1 +1,2 @@
-Example of unit testing. JUnit, Mockito, PowerMock.
+Example of unit testing. 
+JUnit. Mockito. PowerMock.
