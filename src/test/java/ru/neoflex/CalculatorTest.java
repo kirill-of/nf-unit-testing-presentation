@@ -1,7 +1,10 @@
 package ru.neoflex;
 
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 
@@ -20,24 +23,29 @@ public class CalculatorTest {
     }
 
     @Test
-    public void getSum() {
-        assertEquals(4, calculator.getSum(2, 2));
-        assertTrue(calculator.getSum(2, 2) == 4);
-        assertFalse(calculator.getSum(2, 2) == 5);
+    public void add() {
+        assertEquals(4, calculator.add(2, 2));
+        assertTrue(calculator.add(2, 2) == 4);
+        assertFalse(calculator.add(2, 2) == 5);
     }
 
     @Test
-    public void getDivide() {
-        assertEquals(20, calculator.getDivide(100, 5));
+    public void subtraction() {
+        assertEquals(7, calculator.subtraction(10, 3));
     }
 
     @Test
-    public void getMultiple() {
-        assertEquals(33, calculator.getMultiple(11, 3));
+    public void multiplication() {
+        assertEquals(33, calculator.multiplication(11, 3));
+    }
+
+    @Test
+    public void division() {
+        assertEquals(20, calculator.division(100, 5));
     }
 
     @Test(expected = ArithmeticException.class)
     public void divisionWithException() {
-        calculator.getDivide(15, 0);
+        calculator.division(15, 0);
     }
 }
