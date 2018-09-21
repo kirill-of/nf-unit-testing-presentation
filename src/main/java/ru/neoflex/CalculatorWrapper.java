@@ -38,5 +38,12 @@ public class CalculatorWrapper {
         return StaticService.staticMethod() + str;
     }
 
+    public String methodWithConstructor() {
 
+        MyString str = new MyString("badString");
+
+        str.print();
+
+        return str.getStr();
+    }
 }

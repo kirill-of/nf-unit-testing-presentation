@@ -5,21 +5,35 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.stubbing.Answer;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({StaticService.class})
+@PrepareForTest({StaticService.class, CalculatorWrapper.class})
 public class CalculatorWrapperTest {
 
     private CalculatorWrapper calculatorWrapper;
     private ICalculator iCalculator;
+    private Answer<Integer> answer = invocationOnMock -> {
+        Object mock = invocationOnMock.getMock();
+        System.out.println("mock object : " + mock.toString());
+
+        Object[] args = invocationOnMock.getArguments();
+        int d1 = (int) args[0];
+        int d2 = (int) args[1];
+        int sum = d1 + d2;
+        System.out.println("" + d1 + " + " + d2);
+
+        return sum;
+    };
 
     @Before
     public void initTest() {
@@ -73,24 +87,28 @@ public class CalculatorWrapperTest {
         assertEquals(calculatorWrapper.add(19, 25), 44);
     }
 
-    private Answer<Integer> answer = invocationOnMock -> {
-        Object mock = invocationOnMock.getMock();
-        System.out.println("mock object : " + mock.toString());
-
-        Object[] args = invocationOnMock.getArguments();
-        int d1 = (int) args[0];
-        int d2 = (int) args[1];
-        int sum = d1 + d2;
-        System.out.println("" + d1 + " + " + d2);
-
-        return sum;
-    };
-
     @Test
     public void doWork() {
         mockStatic(StaticService.class);
         when(StaticService.staticMethod()).thenReturn("NewStaticService");
 
         assertEquals("NewStaticServiceString", calculatorWrapper.addPrefix("String"));
+    }
+
+    @Test
+    public void methodWithConstructor() throws Exception {
+
+        MyString myString = new MyString("goodString");
+
+        /*MyString myString = mock(MyString.class, new Answer() {
+            @Override
+            public Object answer(InvocationOnMock invocationOnMock) {
+                return null;
+            }
+        });*/
+
+        PowerMockito.whenNew(MyString.class).withAnyArguments().thenReturn(myString);
+
+        calculatorWrapper.methodWithConstructor();
     }
 }
